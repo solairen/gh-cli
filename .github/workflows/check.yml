@@ -1,0 +1,24 @@
+---
+name: Check image
+on:
+  push:
+    branches-ignore:
+      - "main"
+
+jobs:
+  test:
+    name: Build docker image
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.token }}
+    container:
+      image: docker:stable
+    steps:
+      - name: Checkout {{ github.repository }} repository
+        uses: actions/checkout@v2
+        with:
+          repository: ${{ github.repository }}
+          ref: ${{ github.ref }}
+          token: ${{ env.GH_TOKEN }}
+      - name: Build dockerfile
+        run: docker build -t ghcli:latest -f Dockerfile .
