@@ -1,5 +1,4 @@
-#FROM ubuntu:20.04
-FROM moleszek/flake:1.2
+FROM moleszek/flake:1.3
 
 ARG version=2.0.0
 ARG path=/usr/local/bin

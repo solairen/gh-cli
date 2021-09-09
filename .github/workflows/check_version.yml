@@ -1,5 +1,8 @@
 ---
 name: Check GitHub CLI version
+env:
+  GH_TOKEN: ${{ secrets.token }}
+  GHR: ghcr.io
 on:
   schedule:
     - cron: "0 0 * * 1"
@@ -8,13 +11,15 @@ jobs:
   build:
     name: Check GitHub CLI version
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.token }}
     outputs:
       ver: ${{ steps.dockerfile_update.outputs.response }}
     steps:
       - name: Login to GitHub registry
-        run: echo ${{ env.GH_TOKEN }} | docker login docker.pkg.github.com --username ${{ github.repository_owner }} --password-stdin
+        uses: docker/login-action@v1
+        with:
+          registry: ${{ env.GHR }}
+          username: ${{ github.actor }}
+          password: ${{ env.GH_TOKEN }}
       - name: Checkout version_checker repository
         uses: actions/checkout@v2
         with:
@@ -46,8 +51,6 @@ jobs:
     needs: build
     name: Push changes to repository
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.token }}
     if: needs.build.outputs.ver != ''
     steps:
       - name: Checkout ${{ github.repository }} repository
@@ -78,8 +81,6 @@ jobs:
       - build
       - push
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.token }}
     steps:
       - name: Checkout ${{ github.repository }} repository
         uses: actions/checkout@v2
