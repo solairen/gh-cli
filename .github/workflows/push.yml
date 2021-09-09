@@ -14,12 +14,6 @@ jobs:
       NAME: ${{ secrets.docker_username }}
       PASS: ${{ secrets.docker_password }}
     steps:
-      - name: Checkout ${{ github.repository }} repository
-        uses: actions/checkout@v2
-        with:
-          repository: ${{ github.repository }}
-          ref: main
-          token: ${{ env.GH_TOKEN }}
       - name: Check GitHub CLI version
         id: ghcli
         run: |
