@@ -29,4 +29,4 @@ jobs:
         with:
           file: Dockerfile
           push: true
-          tags: moleszek/ghcli:${{ steps.version.outputs.response }}
+          tags: moleszek/ghcli:${{ steps.ghcli.outputs.response }}
