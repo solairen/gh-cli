@@ -1,6 +1,6 @@
 FROM moleszek/flake:1.3
 
-ARG version=2.2.0
+ARG version=2.3.0
 ARG path=/usr/local/bin
 
 LABEL maintainer="mrsolairen@outlook.com"
