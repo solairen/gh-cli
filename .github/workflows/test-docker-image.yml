@@ -2,7 +2,7 @@
 name: Check image
 on:
   pull_request:
-    types: [ opened ]
+    types: [ opened, synchronize ]
 
 env:
   GH_TOKEN: ${{ secrets.token }}
