@@ -5,28 +5,35 @@ on:
     types:
       - published
 
+env:
+  GH_TOKEN: ${{ secrets.token }}
+  NAME: ${{ secrets.docker_username }}
+  PASS: ${{ secrets.docker_password }}
+
 jobs:
   build:
     name: Build docker image
     runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ secrets.token }}
-      NAME: ${{ secrets.docker_username }}
-      PASS: ${{ secrets.docker_password }}
     steps:
       - name: Check GitHub CLI version
         id: ghcli
         run: |
-          check=$(curl -s "https://api.github.com/repos/cli/cli/tags" | grep '"name":' | sed "s/[^0-9.]//g" | head -n1)
+          check=$(curl -s "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name":' | sed "s/[^0-9.]//g" | head -n1)
           echo ::set-output name=response::$check
       - name: Login to Docker Hub
         uses: docker/login-action@v1
         with:
           username: ${{ env.NAME }}
           password: ${{ env.PASS }}
-      - name: Build and push
+      - name: Build and push with tag ${{ steps.ghcli.outputs.response }}
         uses: docker/build-push-action@v2
         with:
           file: Dockerfile
           push: true
           tags: moleszek/ghcli:${{ steps.ghcli.outputs.response }}
+      - name: Build and push with tag latest
+        uses: docker/build-push-action@v2
+        with:
+          file: Dockerfile
+          push: true
+          tags: moleszek/ghcli:latest
