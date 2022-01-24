@@ -1,5 +1,5 @@
 ### About:
-* OS: private image based on alpine linux
+* OS: Alpine Linux 3.15.0
 
 This docker container contains:
 * [GitHub CLI](https://cli.github.com/)

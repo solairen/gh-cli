@@ -1,0 +1,35 @@
+---
+name: Create release
+on:
+  workflow_dispatch:
+
+env:
+  GH_TOKEN: ${{ secrets.token }}
+
+jobs:
+  create-release:
+    name: Create release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get current date
+        uses: srfrnk/current-time@master
+        id: current-time
+        with:
+          format: YYYY-MM-DD
+      - name: Check GitHub CLI version
+        id: ghcli
+        run: |
+          check=$(curl -s "https://api.github.com/repos/cli/cli/releases/latest" | grep '"tag_name":' | sed "s/[^0-9.]//g" | head -n1)
+          echo ::set-output name=response::$check
+      - name: Create release
+        id: create_release
+        uses: ncipollo/release-action@v1
+        with:
+          token: ${{ env.GH_TOKEN }}
+          name: Release ${{ steps.current-time.outputs.formattedTime }}
+          body: |
+            Changes in this release:
+              - GitHub CLI version ${{ steps.ghcli.outputs.response }}
+          draft: false
+          prerelease: false
+          tag: ${{ steps.ghcli.outputs.response }}
