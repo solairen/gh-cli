@@ -1,4 +1,4 @@
-FROM moleszek/flake:1.3
+FROM alpine:3.15.0
 
 ARG version=2.0.0
 ARG path=/usr/local/bin
