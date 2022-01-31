@@ -6,6 +6,7 @@ on:
 
 env:
   GH_TOKEN: ${{ secrets.token }}
+  DISCORD: ${{ secrets.discord_webhook }}
 
 jobs:
   test:
@@ -24,3 +25,26 @@ jobs:
           file: Dockerfile
           push: false
           tags: ghcli:latest
+  notify_on_success:
+    name: Send notification on success
+    needs:
+      - test
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          description: "Successfully test docker image!"
+  notify_on_failure:
+    name: Send notification on failure
+    needs:
+      - test
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          status: failure
+          description: "Failed to test docker image do DockerHub!"
