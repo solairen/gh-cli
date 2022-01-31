@@ -2,11 +2,12 @@
 name: Check GitHub CLI version
 on:
   schedule:
-    - cron: "0 0 * * 1"
+    - cron: "0 20 * * 5"
 
 env:
   GH_TOKEN: ${{ secrets.token }}
   REPO: ${{ secrets.repo }}
+  DISCORD: ${{ secrets.discord_webhook }}
 
 jobs:
   build:
@@ -37,14 +38,14 @@ jobs:
           path: ./.github/actions/${{ github.repository }}
           token: ${{ env.GH_TOKEN }}
       - name: Upload dockerfile
-        if: ${{ needs.build.outputs.version }} != ''
+        if: ${{ contains(steps.dockerfile_update.outputs.response, 'GitHub CLI version changed to') }}
         uses: actions/upload-artifact@v2
         with:
           name: dockerfile
           path: ./.github/actions/${{ github.repository }}/Dockerfile
   push:
     needs: build
-    if: ${{ needs.build.result=='success' }}
+    if: ${{ contains(needs.build.outputs.version, 'GitHub CLI version changed to') }}
     name: Push changes to repository
     runs-on: ubuntu-latest
     steps:
@@ -75,3 +76,28 @@ jobs:
         uses: geekyeggo/delete-artifact@v1
         with:
           name: dockerfile
+  notify_on_success:
+    name: Send notification on success
+    needs:
+      - build
+      - push
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          description: "${{ needs.build.outputs.version }}"
+  notify_on_failure:
+    name: Send notification on failure
+    needs:
+      - build
+      - push
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          status: failure
+          description: "Check GitHub CLI version failed!"

@@ -9,6 +9,7 @@ env:
   GH_TOKEN: ${{ secrets.token }}
   NAME: ${{ secrets.docker_username }}
   PASS: ${{ secrets.docker_password }}
+  DISCORD: ${{ secrets.discord_webhook }}
 
 jobs:
   build:
@@ -37,3 +38,26 @@ jobs:
           file: Dockerfile
           push: true
           tags: moleszek/ghcli:latest
+  notify_on_success:
+    name: Send notification on success
+    needs:
+      - build
+    if: ${{ success() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          description: "Successfully build and push docker image do DockerHub!"
+  notify_on_failure:
+    name: Send notification on failure
+    needs:
+      - build
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ env.DISCORD }}
+          status: failure
+          description: "Failed to build and push docker image do DockerHub!"
