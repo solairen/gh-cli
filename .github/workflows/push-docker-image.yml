@@ -27,13 +27,13 @@ jobs:
           username: ${{ env.NAME }}
           password: ${{ env.PASS }}
       - name: Build and push with tag ${{ steps.ghcli.outputs.response }}
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           file: Dockerfile
           push: true
           tags: moleszek/ghcli:${{ steps.ghcli.outputs.response }}
       - name: Build and push with tag latest
-        uses: docker/build-push-action@v2
+        uses: docker/build-push-action@v3
         with:
           file: Dockerfile
           push: true
