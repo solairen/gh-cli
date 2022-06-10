@@ -1,6 +1,6 @@
 FROM alpine:3.15.0
 
-ARG version=2.11.3
+ARG version=2.12.1
 ARG path=/usr/local/bin
 
 LABEL maintainer="mrsolairen@outlook.com"
