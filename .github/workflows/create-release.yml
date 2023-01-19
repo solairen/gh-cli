@@ -1,11 +1,12 @@
 ---
 name: Create release
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - "main"
 
 env:
   GH_TOKEN: ${{ secrets.token }}
-  DISCORD: ${{ secrets.discord_webhook }}
 
 jobs:
   create-release:
@@ -34,26 +35,3 @@ jobs:
           draft: false
           prerelease: false
           tag: ${{ steps.ghcli.outputs.response }}
-  notify_on_success:
-    name: Send notification on success
-    needs:
-      - create-release
-    if: ${{ success() }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ env.DISCORD }}
-          description: "Release has been created!"
-  notify_on_failure:
-    name: Send notification on failure
-    needs:
-      - create-release
-    if: ${{ failure() }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: sarisia/actions-status-discord@v1
-        with:
-          webhook: ${{ env.DISCORD }}
-          status: failure
-          description: "Create release failed!"
