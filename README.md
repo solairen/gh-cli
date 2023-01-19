@@ -1,5 +1,5 @@
 ### About:
-* OS: Alpine Linux 3.15.0
+* OS: Alpine Linux 3.17.1
 
 This docker container contains:
 * [GitHub CLI](https://cli.github.com/)
@@ -44,7 +44,7 @@ Set alias to be able to use this docker image as `gh` for example:
 
 ```PowerShell
 function gh_cli {
-    docker run --rm -ti -e TOKEN=$env:GHTOKEN -v <pathToGitRepository>:/gh -v <pathToConfig>:/root/.config/gh/ -v <pathToSSH>:/root/.ssh/ moleszek/ghcli:<tag> $args[0,1,2,3,4,5,6,7,8,9]
+    docker run --rm -ti -e TOKEN=$env:GHTOKEN -v <pathToGitRepository>:/gh -v <pathToConfig>:/root/.config/gh/ -v <pathToSSH>:/root/.ssh/ moleszek/ghcli:<tag>
 
 Set-Alias -Name gh -Value gh_cli
 }
@@ -59,7 +59,7 @@ Save and restart `$PROFILE`:
 * On linux open `~/.bashrc`:
 
 ```Bash
-alias gh="docker run --rm -ti -e TOKEN=$GHTOKEN -v <pathToGitRepository>:/gh -v <pathToConfig>:/root/.config/gh/ -v <pathToSSH>:/root/.ssh/ moleszek/ghcli:<tag> $1 $2 $3 $4 $5 $6 $7 $8 $9"
+alias gh="docker run --rm -ti -e TOKEN=$GHTOKEN -v <pathToGitRepository>:/gh -v <pathToConfig>:/root/.config/gh/ -v <pathToSSH>:/root/.ssh/ moleszek/ghcli:<tag>"
 ```
 
 Save and restart `.bashrc`:

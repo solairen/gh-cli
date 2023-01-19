@@ -1,9 +1,9 @@
-FROM alpine:3.15.0
+FROM alpine:3.17.1
 
 ARG version=2.21.2
 ARG path=/usr/local/bin
 
-LABEL maintainer="mrsolairen@outlook.com"
+LABEL maintainer="solairen@solairen.tech"
 LABEL cli_version="${version}"
 LABEL official_documentation="https://cli.github.com/"
 LABEL official_repository="https://github.com/cli/cli"
