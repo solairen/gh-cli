@@ -4,9 +4,6 @@ on:
   pull_request:
     types: [ opened, synchronize ]
 
-env:
-  GH_TOKEN: ${{ secrets.token }}
-
 jobs:
   test:
     name: Test docker image
