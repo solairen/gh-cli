@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Test docker image
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
           file: Dockerfile
           push: false
