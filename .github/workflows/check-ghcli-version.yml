@@ -16,14 +16,14 @@ jobs:
       version: ${{ steps.dockerfile_update.outputs.response }}
     steps:
       - name: Checkout version_checker repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ env.REPO }}/version_checker
           ref: main
           token: ${{ env.GH_TOKEN }}
           path: .github/actions/version_checker
       - name: Checkout ${{ github.repository }} repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}
           ref: main
@@ -49,7 +49,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout ${{ github.repository }} repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: ${{ github.repository }}
           ref: main
