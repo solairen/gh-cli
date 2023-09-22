@@ -1,6 +1,6 @@
 FROM alpine:3.17.1
 
-ARG version=2.32.1
+ARG version=2.35.0
 ARG path=/usr/local/bin
 
 LABEL maintainer="solairen@solairen.tech"
