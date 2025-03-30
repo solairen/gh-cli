@@ -38,7 +38,7 @@ jobs:
           token: ${{ env.GH_TOKEN }}
       - name: Upload dockerfile
         if: ${{ contains(steps.dockerfile_update.outputs.response, 'GitHub CLI version changed to') }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: dockerfile
           path: ./.github/actions/${{ github.repository }}/Dockerfile
