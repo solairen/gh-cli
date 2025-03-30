@@ -72,6 +72,6 @@ jobs:
           branch: ghcli-${{ steps.ghcli.outputs.response }}
           body: ${{ needs.build.outputs.version }}
       - name: Cleanup
-        uses: geekyeggo/delete-artifact@v2
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: dockerfile
